@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zambino Landscaping, LLC | Landscaping in Cherry Hill, NJ</title>
+<meta name="description" content="Professional Landscaping Services in Cherry Hill, NJ — Beautify Your Outdoors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --p:#166534;--pd:#0f4825;--pl:#e3ece6;
+  --bg:#f0f5ee;--bg2:#ffffff;--bg3:#e8f0e5;
+  --dark:#1a2e16;--txt:#1e2d1a;--sub:#4a5e42;--muted:#7a8f72;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden}
+
+/* NAV */
+nav{
+  position:fixed;inset:0 0 auto 0;z-index:999;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:.85rem 2rem;
+  background:rgba(255,255,255,.95);backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(0,0,0,.07);
+  box-shadow:0 1px 12px rgba(0,0,0,.06);
+}
+.nbrand{font-size:1rem;font-weight:800;color:var(--dark);text-decoration:none;letter-spacing:-.02em}
+.nbrand span{color:var(--p)}
+.nphone{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:var(--p);color:#fff;text-decoration:none;
+  padding:.5rem 1.2rem;border-radius:100px;font-weight:700;font-size:.875rem;
+  box-shadow:0 2px 14px rgba(22,101,52,.3);
+  transition:background .25s,transform .2s;
+}
+.nphone:hover{background:var(--pd);transform:translateY(-1px)}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--dark) 0%,#1e3d18 45%,#2a4f22 100%);
+  display:flex;align-items:center;
+  position:relative;overflow:hidden;
+  padding:7rem 2rem 9rem;
+}
+/* organic blob shapes */
+.hero-blob1{
+  position:absolute;right:-10%;top:-20%;
+  width:600px;height:600px;border-radius:62% 38% 70% 30%/55% 45% 55% 45%;
+  background:rgba(22,101,52,.18);pointer-events:none;
+}
+.hero-blob2{
+  position:absolute;left:-15%;bottom:-20%;
+  width:500px;height:500px;border-radius:38% 62% 30% 70%/45% 55% 45% 55%;
+  background:rgba(22,101,52,.1);pointer-events:none;
+}
+/* wave bottom divider */
+.hero-wave{position:absolute;bottom:-1px;left:0;width:100%;overflow:hidden;line-height:0}
+.hero-wave svg{display:block;width:100%;height:80px}
+.hero-wrap{position:relative;z-index:2;max-width:1100px;margin:0 auto;width:100%}
+.badge{
+  display:inline-flex;align-items:center;gap:.45rem;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);
+  padding:.35rem .9rem;border-radius:100px;
+  font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(255,255,255,.9);margin-bottom:1.4rem;
+}
+.hero h1{
+  font-size:clamp(2.4rem,6vw,5rem);font-weight:900;
+  line-height:1.04;letter-spacing:-.035em;color:#fff;margin-bottom:.9rem;
+}
+.hero h1 em{color:var(--p);font-style:normal}
+.hero-sub{
+  font-size:clamp(.95rem,2vw,1.15rem);color:rgba(255,255,255,.75);
+  max-width:580px;line-height:1.65;margin-bottom:2.4rem;
+}
+.ctas{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.btn-main{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:var(--p);color:#fff;text-decoration:none;
+  padding:.95rem 2rem;border-radius:100px;font-weight:700;font-size:1rem;
+  box-shadow:0 4px 20px rgba(22,101,52,.4);
+  transition:background .25s,transform .25s,box-shadow .25s;
+}
+.btn-main:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 8px 28px rgba(22,101,52,.5)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:.55rem;
+  background:transparent;color:#fff;text-decoration:none;
+  padding:.93rem 2rem;border-radius:100px;font-weight:600;font-size:1rem;
+  border:2px solid rgba(255,255,255,.25);
+  transition:border-color .25s,background .25s;
+}
+.btn-ghost:hover{border-color:rgba(255,255,255,.5);background:rgba(255,255,255,.08)}
+.hero-trust{
+  display:flex;gap:2rem;flex-wrap:wrap;margin-top:2.5rem;
+  padding-top:1.8rem;border-top:1px solid rgba(255,255,255,.12);
+}
+.trust{display:flex;align-items:center;gap:.45rem;font-size:.82rem;color:rgba(255,255,255,.75);font-weight:500}
+.trust i{color:var(--p);font-size:.9rem}
+
+/* SERVICES */
+.services{background:var(--bg);padding:5.5rem 2rem}
+.sec-hdr{text-align:center;margin-bottom:3rem}
+.sec-label{
+  display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.15em;
+  text-transform:uppercase;color:var(--p);margin-bottom:.6rem;
+}
+.sec-hdr h2{font-size:clamp(1.7rem,4vw,2.8rem);font-weight:800;letter-spacing:-.025em;color:var(--dark)}
+.sec-hdr p{color:var(--sub);font-size:1rem;max-width:520px;margin:.65rem auto 0;line-height:1.6}
+.svc-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  gap:1.5rem;max-width:1100px;margin:0 auto;
+}
+.scard{
+  background:var(--bg2);border:1px solid rgba(0,0,0,.06);
+  border-radius:20px;padding:2rem;
+  box-shadow:0 2px 16px rgba(0,0,0,.05);
+  transition:transform .3s,box-shadow .3s;
+  position:relative;overflow:hidden;
+}
+.scard::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,var(--p),var(--pd));
+  transform:scaleX(0);transform-origin:left;
+  border-radius:4px 4px 0 0;transition:transform .3s;
+}
+.scard:hover{transform:translateY(-6px);box-shadow:0 16px 36px rgba(0,0,0,.1)}
+.scard:hover::before{transform:scaleX(1)}
+.scard-ico{
+  width:52px;height:52px;border-radius:50%;
+  background:var(--pl);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;color:var(--p);margin-bottom:1.2rem;
+}
+.scard h3{font-size:1.02rem;font-weight:700;color:var(--dark);margin-bottom:.4rem}
+.scard p{font-size:.83rem;color:var(--muted);line-height:1.5}
+
+/* WAVE DIVIDER REUSABLE */
+.wave-top{margin-bottom:-1px}
+.wave-bot{margin-top:-1px}
+
+/* ABOUT */
+.about{background:var(--bg3);padding:5.5rem 2rem}
+.about-inner{
+  max-width:1100px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;
+}
+.about-copy .sec-label{display:block;text-align:left;margin-bottom:.5rem}
+.about-copy h2{font-size:clamp(1.7rem,3.5vw,2.7rem);font-weight:800;letter-spacing:-.025em;color:var(--dark);margin-bottom:1.3rem}
+.about-copy p{color:var(--sub);line-height:1.8;font-size:.975rem;margin-bottom:1.4rem}
+.feature-list{display:flex;flex-direction:column;gap:.65rem}
+.fitem{display:flex;align-items:center;gap:.7rem;font-size:.9rem;color:var(--txt);font-weight:500}
+.fitem i{color:var(--p);font-size:1rem;flex-shrink:0}
+.about-visual{
+  background:var(--bg2);border-radius:24px;padding:2.5rem;
+  box-shadow:0 4px 24px rgba(0,0,0,.07);text-align:center;
+  border:1px solid rgba(0,0,0,.06);
+}
+.big-ico{font-size:5rem;color:var(--p);display:block;margin-bottom:1.2rem}
+.about-visual h3{font-size:1.3rem;font-weight:800;color:var(--dark);margin-bottom:.6rem}
+.about-visual p{color:var(--sub);font-size:.9rem;line-height:1.6;margin-bottom:1.6rem}
+
+/* TESTIMONIALS */
+.testimonials{background:var(--bg2);padding:5.5rem 2rem}
+.t-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));
+  gap:1.5rem;max-width:1100px;margin:0 auto;
+}
+.tcard{
+  background:var(--bg);border-radius:20px;padding:2rem;
+  border:1px solid rgba(0,0,0,.06);
+  box-shadow:0 2px 14px rgba(0,0,0,.05);
+  transition:transform .3s,box-shadow .3s;
+}
+.tcard:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(0,0,0,.1)}
+.stars{color:#f59e0b;letter-spacing:2px;margin-bottom:.9rem;font-size:.9rem}
+.tcard p{color:var(--sub);line-height:1.7;font-size:.93rem;font-style:italic;margin-bottom:.9rem}
+.rname{font-size:.8rem;color:var(--p);font-weight:600}
+
+/* CTA */
+.cta-band{
+  background:linear-gradient(135deg,var(--dark) 0%,#2a4f22 100%);
+  padding:5rem 2rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-band::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(22,101,52,.25) 0%,transparent 65%);
+}
+.cta-inner{position:relative;z-index:1}
+.cta-band h2{font-size:clamp(1.9rem,5vw,3.2rem);font-weight:900;letter-spacing:-.03em;color:#fff;margin-bottom:.9rem}
+.cta-band p{font-size:1.05rem;color:rgba(255,255,255,.8);max-width:480px;margin:0 auto 2.4rem;line-height:1.6}
+.btn-cta{
+  display:inline-flex;align-items:center;gap:.7rem;
+  background:var(--p);color:#fff;text-decoration:none;
+  padding:1.1rem 2.6rem;border-radius:100px;font-weight:800;font-size:1.1rem;
+  box-shadow:0 4px 20px rgba(22,101,52,.4);
+  transition:background .25s,transform .25s,box-shadow .25s;
+}
+.btn-cta:hover{background:var(--pd);transform:translateY(-2px);box-shadow:0 8px 28px rgba(22,101,52,.55)}
+
+/* FOOTER */
+footer{background:var(--dark);padding:2.2rem 2rem;text-align:center}
+footer p{color:rgba(255,255,255,.4);font-size:.82rem}
+footer a{color:var(--p);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ANIMATE */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.hero-wrap>*{animation:fadeUp .55s ease both}
+.hero-wrap>*:nth-child(1){animation-delay:.1s}
+.hero-wrap>*:nth-child(2){animation-delay:.2s}
+.hero-wrap>*:nth-child(3){animation-delay:.28s}
+.hero-wrap>*:nth-child(4){animation-delay:.36s}
+.hero-wrap>*:nth-child(5){animation-delay:.44s}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .about-inner{grid-template-columns:1fr;gap:2.5rem}
+  .ctas{flex-direction:column;align-items:flex-start}
+  .hero-blob1,.hero-blob2{display:none}
+}
+@media(max-width:480px){
+  .svc-grid{grid-template-columns:1fr}
+  .t-grid{grid-template-columns:1fr}
+  nav{padding:.75rem 1rem}
+}
+/* ── MAP ── */
+.map-section{background:#1a2e16}
+#map{width:100%;height:400px;display:block}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nbrand" href="#"><span>Zambino Landscaping, LLC</span></a>
+  <a class="nphone" href="tel:8568895744"><i class="fas fa-phone"></i>(856) 889-5744</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-blob1"></div>
+  <div class="hero-blob2"></div>
+  <div class="hero-wrap">
+    <div class="badge"><i class="fas fa-leaf"></i>&nbsp;Landscaping &mdash; Cherry Hill, NJ</div>
+    <h1>Zambino Landscaping, LLC<br><em>Landscaping Experts</em></h1>
+    <p class="hero-sub">Professional Landscaping Services in Cherry Hill, NJ — Beautify Your Outdoors.</p>
+    <div class="ctas">
+      <a class="btn-main" href="tel:8568895744"><i class="fas fa-phone"></i>Call Now: (856) 889-5744</a>
+      <a class="btn-ghost" href="#services"><i class="fas fa-leaf"></i>Our Services</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust"><i class="fas fa-check-circle"></i>Licensed &amp; Insured</div>
+      <div class="trust"><i class="fas fa-star"></i>5-Star Rated</div>
+      <div class="trust"><i class="fas fa-tag"></i>Free Estimates</div>
+      <div class="trust"><i class="fas fa-map-marker-alt"></i>Serving Cherry Hill</div>
+    </div>
+  </div>
+  <div class="hero-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 80" preserveAspectRatio="none">
+      <path d="M0,40 C300,80 900,0 1200,40 L1200,80 L0,80 Z" fill="#f0f5ee"/>
+    </svg>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="sec-hdr">
+    <span class="sec-label">What We Offer</span>
+    <h2>Our Landscaping Services</h2>
+    <p>Expert outdoor care for properties throughout Cherry Hill and surrounding communities.</p>
+  </div>
+  <div class="svc-grid">
+      <div class="scard">
+        <div class="scard-ico"><i class="fas fa-tree"></i></div>
+        <h3>Landscaping</h3>
+        <p>Expert care for your outdoor space, delivered with attention to detail.</p>
+      </div>
+      <div class="scard">
+        <div class="scard-ico"><i class="fas fa-leaf"></i></div>
+        <h3>Hardscaping</h3>
+        <p>Expert care for your outdoor space, delivered with attention to detail.</p>
+      </div>
+      <div class="scard">
+        <div class="scard-ico"><i class="fas fa-seedling"></i></div>
+        <h3>Fertilization</h3>
+        <p>Expert care for your outdoor space, delivered with attention to detail.</p>
+      </div>
+      <div class="scard">
+        <div class="scard-ico"><i class="fas fa-star"></i></div>
+        <h3>Lawn Maintenance</h3>
+        <p>Expert care for your outdoor space, delivered with attention to detail.</p>
+      </div>
+      <div class="scard">
+        <div class="scard-ico"><i class="fas fa-check-circle"></i></div>
+        <h3>Landscape Lighting</h3>
+        <p>Expert care for your outdoor space, delivered with attention to detail.</p>
+      </div>
+      <div class="scard">
+        <div class="scard-ico"><i class="fas fa-sun"></i></div>
+        <h3>Irrigation</h3>
+        <p>Expert care for your outdoor space, delivered with attention to detail.</p>
+      </div></div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-copy">
+      <span class="sec-label">About Us</span>
+      <h2>Passion for the Outdoors</h2>
+      <p>Stay safe and accessible all winter with reliable snow plowing, shoveling, and de-icing services for homes and businesses.</p>
+      <div class="feature-list">
+        <div class="fitem"><i class="fas fa-check-circle"></i>Licensed &amp; Fully Insured</div>
+        <div class="fitem"><i class="fas fa-check-circle"></i>Free Written Estimates</div>
+        <div class="fitem"><i class="fas fa-check-circle"></i>Serving Cherry Hill &amp; Surrounding Areas</div>
+        <div class="fitem"><i class="fas fa-check-circle"></i>Satisfaction Guaranteed</div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <i class="fas fa-leaf big-ico"></i>
+      <h3>Landscaping Specialists</h3>
+      <p>Transforming outdoor spaces across Cherry Hill, NJ. Your yard, our pride.</p>
+      <a class="btn-main" href="tel:8568895744" style="justify-content:center">
+        <i class="fas fa-phone"></i>(856) 889-5744
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="sec-hdr">
+    <span class="sec-label">Happy Customers</span>
+    <h2>What Homeowners Say</h2>
+    <p>Real reviews from satisfied customers across Cherry Hill who chose Zambino Landscaping, LLC.</p>
+  </div>
+  <div class="t-grid">
+      <div class="tcard">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;Amazing service from start to finish. Professional, on time, and did an outstanding job. I couldn&#39;t be happier with the results and will definitely use them again.&rdquo;</p>
+        <span class="rname">&#8212; Happy Homeowner in Cherry Hill</span>
+      </div>
+      <div class="tcard">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;Best decision I made was calling this company. Fair pricing, great communication, and the quality of work exceeded my expectations. Highly recommend!&rdquo;</p>
+        <span class="rname">&#8212; Happy Homeowner in Cherry Hill</span>
+      </div>
+      <div class="tcard">
+        <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <p>&ldquo;Outstanding crew — knowledgeable, friendly, and they left everything spotless. Completed the job exactly as promised. Five stars without hesitation.&rdquo;</p>
+        <span class="rname">&#8212; Happy Homeowner in Cherry Hill</span>
+      </div></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band" id="contact">
+  <div class="cta-inner">
+    <h2>Ready for a Beautiful Yard?</h2>
+    <p>Contact Zambino Landscaping, LLC today for a free estimate on landscaping in Cherry Hill, NJ.</p>
+    <a class="btn-cta" href="tel:8568895744"><i class="fas fa-phone-alt"></i>Call (856) 889-5744</a>
+  </div>
+</section>
+
+<!-- MAP -->
+<section class="map-section">
+  <div id="map" aria-label="Map showing Zambino Landscaping, LLC in Cherry Hill, NJ"></div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Zambino Landscaping, LLC &nbsp;&bull;&nbsp; Landscaping in Cherry Hill, NJ &nbsp;&bull;&nbsp; <a href="tel:8568895744">(856) 889-5744</a></p>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+(function(){
+  var geo='Cherry Hill, NJ';
+  if(!geo)return;
+  var q=encodeURIComponent(geo+', USA');
+  fetch('https://nominatim.openstreetmap.org/search?q='+q+'&format=json&limit=1')
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(!d||!d.length)return;
+      var lat=parseFloat(d[0].lat),lng=parseFloat(d[0].lon);
+      var map=L.map('map',{scrollWheelZoom:false}).setView([lat,lng],13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+        attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom:19
+      }).addTo(map);
+      L.marker([lat,lng]).addTo(map).bindPopup('Zambino Landscaping, LLC').openPopup();
+    }).catch(function(){});
+})();
+</script>
+
+</body>
+</html>
